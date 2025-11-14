@@ -1,0 +1,899 @@
+{
+  "datasets": [
+    {
+      "name": "da575a3f",
+      "displayName": "clasificacion_vehiculo",
+      "queryLines": [
+        "select * from catalog_dev.golden.clasificacion_vehiculo"
+      ]
+    },
+    {
+      "name": "7ead65c1",
+      "displayName": "ranking_lideres",
+      "queryLines": [
+        "select * from catalog_dev.golden.ranking_lideres"
+      ]
+    },
+    {
+      "name": "68478c94",
+      "displayName": "tendencia_diaria",
+      "queryLines": [
+        "select * from catalog_dev.golden.tendencia_diaria"
+      ]
+    },
+    {
+      "name": "858b4e08",
+      "displayName": "incidentes_zona",
+      "queryLines": [
+        "select * from catalog_dev.golden.zona_estado"
+      ]
+    },
+    {
+      "name": "eb6144e4",
+      "displayName": "detalle_bitacora",
+      "queryLines": [
+        "select * from catalog_dev.silver.bitacora_clasificacion"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "46aaa8f5",
+      "displayName": "ServiFix",
+      "layout": [
+        {
+          "widget": {
+            "name": "numero-incidentes-x-lider-tecnico",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7ead65c1",
+                  "fields": [
+                    {
+                      "name": "sum(Total_Incidentes)",
+                      "expression": "SUM(`Total_Incidentes`)"
+                    },
+                    {
+                      "name": "Lider_Tecnico",
+                      "expression": "`Lider_Tecnico`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(Total_Incidentes)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Incidentes"
+                },
+                "color": {
+                  "fieldName": "Lider_Tecnico",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Pedro Luis Sarmiento",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 10
+                        }
+                      }
+                    ]
+                  },
+                  "displayName": "Líder Técnico"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": "Número Incidentes x Líder Técnico"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "incidentes-asignados-x-dia",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "68478c94",
+                  "fields": [
+                    {
+                      "name": "Incidentes_por_dia",
+                      "expression": "`Incidentes_por_dia`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "Incidentes_por_dia"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": "Incidentes Asignados x Día"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ae1f5831",
+            "queries": [
+              {
+                "name": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3be10a1753b5677827befc95ab_Cod_incidente",
+                "query": {
+                  "datasetName": "eb6144e4",
+                  "fields": [
+                    {
+                      "name": "Cod_incidente",
+                      "expression": "`Cod_incidente`"
+                    },
+                    {
+                      "name": "Cod_incidente_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Cod_incidente",
+                    "queryName": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3be10a1753b5677827befc95ab_Cod_incidente"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": false
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "8e8887fa",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "eb6144e4",
+                  "fields": [
+                    {
+                      "name": "Cod_incidente",
+                      "expression": "`Cod_incidente`"
+                    },
+                    {
+                      "name": "Zona",
+                      "expression": "`Zona`"
+                    },
+                    {
+                      "name": "Hora_Asignacion",
+                      "expression": "`Hora_Asignacion`"
+                    },
+                    {
+                      "name": "Tipo_Vehiculo",
+                      "expression": "`Tipo_Vehiculo`"
+                    },
+                    {
+                      "name": "Numero_Tecnicos",
+                      "expression": "`Numero_Tecnicos`"
+                    },
+                    {
+                      "name": "Equipo_Afectado",
+                      "expression": "`Equipo_Afectado`"
+                    },
+                    {
+                      "name": "Tipo_Falla",
+                      "expression": "`Tipo_Falla`"
+                    },
+                    {
+                      "name": "Prioridad",
+                      "expression": "`Prioridad`"
+                    },
+                    {
+                      "name": "Lider_Tecnico",
+                      "expression": "`Lider_Tecnico`"
+                    },
+                    {
+                      "name": "Criticidad",
+                      "expression": "`Criticidad`"
+                    },
+                    {
+                      "name": "Tiempo_Espera_Horas",
+                      "expression": "`Tiempo_Espera_Horas`"
+                    },
+                    {
+                      "name": "Horas_Transcurridas",
+                      "expression": "`Horas_Transcurridas`"
+                    },
+                    {
+                      "name": "Clasificacion",
+                      "expression": "`Clasificacion`"
+                    },
+                    {
+                      "name": "Fecha_Ejecucion",
+                      "expression": "`Fecha_Ejecucion`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "Cod_incidente",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "Cod_incidente",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Zona",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "Zona",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Hora_Asignacion",
+                    "dateTimeFormat": "DD/MM/YYYY HH:mm:ss.SSS",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "datetime",
+                    "displayAs": "datetime",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "Hora_Asignacion",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Tipo_Vehiculo",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "Tipo_Vehiculo",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Numero_Tecnicos",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100005,
+                    "title": "Numero_Tecnicos",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Equipo_Afectado",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100006,
+                    "title": "Equipo_Afectado",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Tipo_Falla",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100007,
+                    "title": "Tipo_Falla",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Prioridad",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100008,
+                    "title": "Prioridad",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Lider_Tecnico",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100009,
+                    "title": "Lider_Tecnico",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Criticidad",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100010,
+                    "title": "Criticidad",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Tiempo_Espera_Horas",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100011,
+                    "title": "Tiempo_Espera_Horas",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Horas_Transcurridas",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100012,
+                    "title": "Horas_Transcurridas",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Clasificacion",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100013,
+                    "title": "Clasificacion",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "Fecha_Ejecucion",
+                    "dateTimeFormat": "DD/MM/YYYY HH:mm:ss.SSS",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "datetime",
+                    "displayAs": "datetime",
+                    "visible": true,
+                    "order": 100014,
+                    "title": "Fecha_Ejecucion",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "Estado",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100002,
+                  "title": "Estado",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                }
+              ],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "incidentes-x-zona",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "858b4e08",
+                  "fields": [
+                    {
+                      "name": "Zona",
+                      "expression": "`Zona`"
+                    },
+                    {
+                      "name": "sum(Total_Incidentes_Zona)",
+                      "expression": "SUM(`Total_Incidentes_Zona`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Zona",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Total_Incidentes_Zona)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Incidentes"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Incidentes x Zona"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "97b1e6fb",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "cfe460e5",
+            "queries": [
+              {
+                "name": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3ba7111e57afb1e7536117cbab_Fecha_Ejecucion",
+                "query": {
+                  "datasetName": "68478c94",
+                  "fields": [
+                    {
+                      "name": "Fecha_Ejecucion",
+                      "expression": "`Fecha_Ejecucion`"
+                    },
+                    {
+                      "name": "Fecha_Ejecucion_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Fecha_Ejecucion",
+                    "queryName": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3ba7111e57afb1e7536117cbab_Fecha_Ejecucion"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Filtro Incidentes x Día"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "be91416e",
+            "queries": [
+              {
+                "name": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3b95601f70b39e74a959a3b023_Fecha_Ejecucion",
+                "query": {
+                  "datasetName": "7ead65c1",
+                  "fields": [
+                    {
+                      "name": "Fecha_Ejecucion",
+                      "expression": "`Fecha_Ejecucion`"
+                    },
+                    {
+                      "name": "Fecha_Ejecucion_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Fecha_Ejecucion",
+                    "queryName": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3b95601f70b39e74a959a3b023_Fecha_Ejecucion"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Filtro Incidentes Incidentes x Líder Técnico"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5290ca01",
+            "queries": [
+              {
+                "name": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3bc4021b18af405b8fef39b0a4_Fecha_Ejecucion",
+                "query": {
+                  "datasetName": "858b4e08",
+                  "fields": [
+                    {
+                      "name": "Fecha_Ejecucion",
+                      "expression": "`Fecha_Ejecucion`"
+                    },
+                    {
+                      "name": "Fecha_Ejecucion_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Fecha_Ejecucion",
+                    "queryName": "dashboards/01f0be3b0bbb1bd9bec659683b129a84/datasets/01f0be3bc4021b18af405b8fef39b0a4_Fecha_Ejecucion"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "description": "Filtro Incidentes x Zona"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
